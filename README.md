@@ -1,5 +1,4 @@
 sqlmatchers [![Build Status](https://travis-ci.org/monrealis/hamcrest-sqlmatchers.svg?branch=master)](https://travis-ci.org/monrealis/hamcrest-sqlmatchers)
-
 ===
 
 This library contains Hamcrest matchers to validate SQL statements.
