@@ -1,0 +1,2 @@
+language: java
+install: cd lib/ && ./install.sh
