@@ -29,46 +29,59 @@ class SqlMatcher extends TypeSafeMatcher<String> {
 
 	@Override
 	protected boolean matchesSafely(String sqlFragment) {
-		List<?> statements;
 		try {
-			statements = parseStatements(createFullSqlStatement(sqlFragment));
-		} catch (ParseException e) {
-			return false;
-		}
-		ZStatement statement;
-		try {
-			statement = getExactlyOneStatement(statements);
-		} catch (NotOneStatement e) {
-			return false;
-		}
-		try {
-			ensureTypeMatchesExpected(statement);
+			tryMatch(sqlFragment);
 			return true;
-		} catch (ClassCastException e) {
+		} catch (NotMatched e) {
 			return false;
 		}
+	}
 
+	private void tryMatch(String sqlFragment) throws NotMatched {
+		List<?> statements = parseStatements(createFullSqlStatement(sqlFragment));
+		ZStatement statement = getExactlyOneStatement(statements);
+		ensureTypeMatchesExpected(statement);
 	}
 
 	private String createFullSqlStatement(String sqlFragment) {
 		return statementPrefix + sqlFragment + ";";
 	}
 
-	private List<?> parseStatements(String statement) throws ParseException {
+	private List<?> parseStatements(String statement) throws NotMatched {
+		try {
+			return tryParseStatements(statement);
+		} catch (ParseException e) {
+			throw new NotMatched(e);
+		}
+	}
+
+	private List<?> tryParseStatements(String statement) throws ParseException {
 		ZqlParser parser = new ZqlParser();
 		parser.initParser(new ByteArrayInputStream(statement.getBytes()));
 		Vector<?> statements = parser.readStatements();
 		return statements;
 	}
 
-	private ZStatement getExactlyOneStatement(List<?> statements) throws NotOneStatement {
+	private ZStatement getExactlyOneStatement(List<?> statements) throws NotMatched {
 		if (statements.size() != 1)
-			throw new NotOneStatement();
+			throw new NotMatched(new NotOneStatement());
 		return (ZStatement) statements.iterator().next();
 	}
 
-	private void ensureTypeMatchesExpected(ZStatement statement) {
-		expectedType.cast(statement);
+	private void ensureTypeMatchesExpected(ZStatement statement) throws NotMatched {
+		try {
+			expectedType.cast(statement);
+		} catch (ClassCastException e) {
+			throw new NotMatched(e);
+		}
+	}
+
+	public static class NotMatched extends Exception {
+		private static final long serialVersionUID = 1L;
+
+		public NotMatched(Exception cause) {
+			super(cause);
+		}
 	}
 
 	private static class NotOneStatement extends Exception {
