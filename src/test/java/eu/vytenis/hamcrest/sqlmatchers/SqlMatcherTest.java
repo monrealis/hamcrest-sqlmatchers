@@ -10,6 +10,7 @@ import org.gibello.zql.ZDelete;
 import org.gibello.zql.ZInsert;
 import org.gibello.zql.ZQuery;
 import org.gibello.zql.ZUpdate;
+import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -68,27 +69,64 @@ public class SqlMatcherTest {
 	}
 
 	public enum MatcherType {
-		Select, Insert, Update, Delete;
+		Select {
+			@Override
+			public SqlMatcher matcher() {
+				return isSelect();
+			}
+		},
+		Insert {
+			@Override
+			public SqlMatcher matcher() {
+				return isInsert();
+			}
+		},
+		Update {
+			@Override
+			public SqlMatcher matcher() {
+				return isUpdate();
+			}
+		},
+		Delete {
+			@Override
+			public SqlMatcher matcher() {
+				return isDelete();
+			}
+		};
+
+		public abstract SqlMatcher matcher();
 	}
 
 	public enum ExpectedResult {
-		Pass, Fail
+		Pass {
+			@Override
+			public <T> Matcher<T> matcher(Matcher<T> matcher) {
+				return matcher;
+			}
+		},
+		Fail {
+			@Override
+			public <T> Matcher<T> matcher(Matcher<T> matcher) {
+				return not(matcher);
+			}
+		};
+		public abstract <T> Matcher<T> matcher(Matcher<T> matcher);
 
 	}
 
-	private SqlMatcher isSelect() {
+	private static SqlMatcher isSelect() {
 		return new SqlMatcher(ZQuery.class);
 	}
 
-	private SqlMatcher isInsert() {
+	private static SqlMatcher isInsert() {
 		return new SqlMatcher(ZInsert.class);
 	}
 
-	private SqlMatcher isUpdate() {
+	private static SqlMatcher isUpdate() {
 		return new SqlMatcher(ZUpdate.class);
 	}
 
-	private SqlMatcher isDelete() {
+	private static SqlMatcher isDelete() {
 		return new SqlMatcher(ZDelete.class);
 	}
 
