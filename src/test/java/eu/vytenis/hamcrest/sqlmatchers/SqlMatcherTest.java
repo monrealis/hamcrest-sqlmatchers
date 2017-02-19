@@ -6,10 +6,6 @@ import static org.junit.Assert.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.gibello.zql.ZDelete;
-import org.gibello.zql.ZInsert;
-import org.gibello.zql.ZQuery;
-import org.gibello.zql.ZUpdate;
 import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,25 +47,25 @@ public class SqlMatcherTest {
 		Select {
 			@Override
 			public SqlMatcher matcher() {
-				return isSelect();
+				return SqlMatchers.isSelect();
 			}
 		},
 		Insert {
 			@Override
 			public SqlMatcher matcher() {
-				return isInsert();
+				return SqlMatchers.isInsert();
 			}
 		},
 		Update {
 			@Override
 			public SqlMatcher matcher() {
-				return isUpdate();
+				return SqlMatchers.isUpdate();
 			}
 		},
 		Delete {
 			@Override
 			public SqlMatcher matcher() {
-				return isDelete();
+				return SqlMatchers.isDelete();
 			}
 		};
 
@@ -91,21 +87,5 @@ public class SqlMatcherTest {
 		};
 		public abstract <T> Matcher<T> matcher(Matcher<T> matcher);
 
-	}
-
-	private static SqlMatcher isSelect() {
-		return new SqlMatcher(ZQuery.class);
-	}
-
-	private static SqlMatcher isInsert() {
-		return new SqlMatcher(ZInsert.class);
-	}
-
-	private static SqlMatcher isUpdate() {
-		return new SqlMatcher(ZUpdate.class);
-	}
-
-	private static SqlMatcher isDelete() {
-		return new SqlMatcher(ZDelete.class);
 	}
 }
