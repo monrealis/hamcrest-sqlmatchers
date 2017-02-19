@@ -7,7 +7,7 @@ import org.gibello.zql.ZInsert;
 import org.gibello.zql.ZQuery;
 import org.junit.Test;
 
-public class IsSelectMatcherTest {
+public class SqlMatcherTest {
 	@Test
 	public void matchesValidSelect() {
 		assertThat("select * from dual", isSelect());
@@ -28,11 +28,11 @@ public class IsSelectMatcherTest {
 		assertThat("insert into table", not(isInsert()));
 	}
 
-	private IsSelectMatcher isSelect() {
-		return new IsSelectMatcher(ZQuery.class);
+	private SqlMatcher isSelect() {
+		return new SqlMatcher(ZQuery.class);
 	}
 
-	private IsSelectMatcher isInsert() {
-		return new IsSelectMatcher(ZInsert.class);
+	private SqlMatcher isInsert() {
+		return new SqlMatcher(ZInsert.class);
 	}
 }

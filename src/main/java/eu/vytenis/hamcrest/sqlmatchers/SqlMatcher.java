@@ -9,10 +9,10 @@ import org.gibello.zql.ZqlParser;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 
-public class IsSelectMatcher extends TypeSafeMatcher<String> {
+public class SqlMatcher extends TypeSafeMatcher<String> {
 	private final Class<? extends ZStatement> expectedType;
 
-	public IsSelectMatcher(Class<? extends ZStatement> expectedType) {
+	public SqlMatcher(Class<? extends ZStatement> expectedType) {
 		this.expectedType = expectedType;
 	}
 
