@@ -27,8 +27,9 @@ public class SqlMatcher extends TypeSafeMatcher<String> {
 			return true;
 		} catch (ParseException e) {
 			return false;
+		} catch (ClassCastException e) {
+			return false;
 		}
-
 	}
 
 	private void parseQuery(String statement) throws ParseException {
