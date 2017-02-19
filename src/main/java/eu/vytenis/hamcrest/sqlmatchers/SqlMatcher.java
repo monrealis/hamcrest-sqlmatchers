@@ -13,18 +13,24 @@ import org.hamcrest.TypeSafeMatcher;
 class SqlMatcher extends TypeSafeMatcher<String> {
 	private final Class<? extends ZStatement> expectedType;
 	private final String statementPrefix;
+	private final String name;
 
-	public SqlMatcher(Class<? extends ZStatement> expectedType) {
-		this(expectedType, "");
+	public SqlMatcher(Class<? extends ZStatement> expectedType, String name) {
+		this(expectedType, name, "");
 	}
 
-	public SqlMatcher(Class<? extends ZStatement> expectedType, String sqlPrefix) {
+	public SqlMatcher(Class<? extends ZStatement> expectedType, String name, String sqlPrefix) {
 		this.expectedType = expectedType;
+		this.name = name;
 		this.statementPrefix = sqlPrefix;
 	}
 
 	public void describeTo(Description description) {
-		description.appendText("a valid SELECT statement");
+		description.appendText(createDescription());
+	}
+
+	protected String createDescription() {
+		return String.format("a valid %s", name);
 	}
 
 	@Override

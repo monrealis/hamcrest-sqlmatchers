@@ -7,22 +7,22 @@ import org.gibello.zql.ZUpdate;
 
 public class SqlMatchers {
 	public static SqlMatcher isSelect() {
-		return new SqlMatcher(ZQuery.class);
+		return new SqlMatcher(ZQuery.class, "SELECT statement");
 	}
 
 	public static SqlMatcher isInsert() {
-		return new SqlMatcher(ZInsert.class);
+		return new SqlMatcher(ZInsert.class, "INSERT statement");
 	}
 
 	public static SqlMatcher isUpdate() {
-		return new SqlMatcher(ZUpdate.class);
+		return new SqlMatcher(ZUpdate.class, "UPDATE statement");
 	}
 
 	public static SqlMatcher isDelete() {
-		return new SqlMatcher(ZDelete.class);
+		return new SqlMatcher(ZDelete.class, "DELETE statement");
 	}
-	
+
 	public static SqlMatcher isWhere() {
-		return new SqlMatcher(ZQuery.class, "select * from mytable where ");
+		return new SqlMatcher(ZQuery.class, "WHERE clause", "select * from mytable where ");
 	}
 }
