@@ -24,7 +24,14 @@ enum MatcherType {
 		public SqlMatcher matcher() {
 			return SqlMatchers.isDelete();
 		}
-	};
+	},
+	Where {
+		@Override
+		public SqlMatcher matcher() {
+			return SqlMatchers.isWhere();
+		}
+	}
+	;
 
 	public abstract SqlMatcher matcher();
 }

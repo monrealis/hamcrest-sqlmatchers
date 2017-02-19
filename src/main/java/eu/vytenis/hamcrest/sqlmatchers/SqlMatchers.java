@@ -21,4 +21,8 @@ public class SqlMatchers {
 	public static SqlMatcher isDelete() {
 		return new SqlMatcher(ZDelete.class);
 	}
+	
+	public static SqlMatcher isWhere() {
+		return new SqlMatcher(ZQuery.class, "select * from mytable where ");
+	}
 }

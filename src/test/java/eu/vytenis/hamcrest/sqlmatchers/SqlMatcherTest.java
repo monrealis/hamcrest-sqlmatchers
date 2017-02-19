@@ -6,6 +6,7 @@ import static eu.vytenis.hamcrest.sqlmatchers.MatcherType.Delete;
 import static eu.vytenis.hamcrest.sqlmatchers.MatcherType.Insert;
 import static eu.vytenis.hamcrest.sqlmatchers.MatcherType.Select;
 import static eu.vytenis.hamcrest.sqlmatchers.MatcherType.Update;
+import static eu.vytenis.hamcrest.sqlmatchers.MatcherType.Where;
 import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
@@ -43,6 +44,9 @@ public class SqlMatcherTest {
 		addCase(Update, Fail, "update mytable");
 		addCase(Delete, Pass, "delete from mytable");
 		addCase(Delete, Fail, "delete from mytable where");
+		addCase(Where, Pass, "1 > 0");
+		addCase(Where, Pass, "exists (select 1 from mytable t where 1 > 0)");
+		addCase(Where, Fail, "exists (select 1 from mytable t where 1 > 0");
 	}
 
 	private static void addCase(MatcherType matcherType, ExpectedResult expectedResult, String sqlFragment) {

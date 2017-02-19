@@ -11,9 +11,15 @@ import org.hamcrest.TypeSafeMatcher;
 
 class SqlMatcher extends TypeSafeMatcher<String> {
 	private final Class<? extends ZStatement> expectedType;
+	private final String statementPrefix;
 
 	public SqlMatcher(Class<? extends ZStatement> expectedType) {
+		this(expectedType, "");
+	}
+
+	public SqlMatcher(Class<? extends ZStatement> expectedType, String sqlPrefix) {
 		this.expectedType = expectedType;
+		this.statementPrefix = sqlPrefix;
 	}
 
 	public void describeTo(Description description) {
@@ -21,15 +27,19 @@ class SqlMatcher extends TypeSafeMatcher<String> {
 	}
 
 	@Override
-	protected boolean matchesSafely(String statement) {
+	protected boolean matchesSafely(String sqlFragment) {
 		try {
-			parseQuery(statement + ";");
+			parseQuery(createFullSqlStatement(sqlFragment));
 			return true;
 		} catch (ParseException e) {
 			return false;
 		} catch (ClassCastException e) {
 			return false;
 		}
+	}
+
+	private String createFullSqlStatement(String sqlFragment) {
+		return statementPrefix + sqlFragment + ";";
 	}
 
 	private void parseQuery(String statement) throws ParseException {
