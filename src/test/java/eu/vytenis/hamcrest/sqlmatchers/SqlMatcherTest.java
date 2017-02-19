@@ -28,44 +28,23 @@ public class SqlMatcherTest {
 		this.expectedResult = expectedResult;
 	}
 
-	@Test
-	public void matchesValidSelect() {
-		assertThat("select * from dual", isSelect());
+	@Parameters
+	public static List<Object[]> parameters() {
+		List<Object[]> r = new ArrayList<Object[]>();
+		r.add(new Object[] { "select * from dual", MatcherType.Select, ExpectedResult.Pass });
+		r.add(new Object[] { "select *, from dual", MatcherType.Select, ExpectedResult.Fail });
+		r.add(new Object[] { "insert into mytable values(1)", MatcherType.Insert, ExpectedResult.Pass });
+		r.add(new Object[] { "insert into table", MatcherType.Insert, ExpectedResult.Fail });
+		r.add(new Object[] { "update mytable set a = b", MatcherType.Update, ExpectedResult.Pass });
+		r.add(new Object[] { "update mytable", MatcherType.Update, ExpectedResult.Fail });
+		r.add(new Object[] { "delete from mytable", MatcherType.Delete, ExpectedResult.Pass });
+		r.add(new Object[] { "delete from mytable where", MatcherType.Delete, ExpectedResult.Fail });
+		return r;
 	}
 
 	@Test
-	public void doesNotMatchInvalidSelect() {
-		assertThat("select *, from dual", not(isSelect()));
-	}
-
-	@Test
-	public void matchesValidInsert() {
-		assertThat("insert into mytable values(1)", isInsert());
-	}
-
-	@Test
-	public void doesNotMatchInvalidInsert() {
-		assertThat("insert into table", not(isInsert()));
-	}
-
-	@Test
-	public void matchesValidUpdate() {
-		assertThat("update mytable set a = b", isUpdate());
-	}
-
-	@Test
-	public void doesNotMatchInvalidUpdate() {
-		assertThat("update mytable", not(isUpdate()));
-	}
-
-	@Test
-	public void matchesValidDelete() {
-		assertThat("delete from mytable", isDelete());
-	}
-
-	@Test
-	public void doesNotMatchInvalidDelete() {
-		assertThat("delete from mytable where", not(isDelete()));
+	public void sqlFragmentValidityMatchesTypeAndExpectedResult() {
+		assertThat(sqlFragment, expectedResult.matcher(matcherType.matcher()));
 	}
 
 	public enum MatcherType {
@@ -129,12 +108,4 @@ public class SqlMatcherTest {
 	private static SqlMatcher isDelete() {
 		return new SqlMatcher(ZDelete.class);
 	}
-
-	@Parameters
-	public static List<Object[]> parameters() {
-		List<Object[]> r = new ArrayList<Object[]>();
-		r.add(new Object[] { "select * from dual", MatcherType.Select, ExpectedResult.Pass });
-		return r;
-	}
-
 }
