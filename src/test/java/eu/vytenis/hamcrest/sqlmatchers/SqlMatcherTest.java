@@ -47,6 +47,10 @@ public class SqlMatcherTest {
 		addCase(Where, Pass, "1 > 0");
 		addCase(Where, Pass, "exists (select 1 from mytable t where 1 > 0)");
 		addCase(Where, Fail, "exists (select 1 from mytable t where 1 > 0");
+		addCase(Select, Pass, "select * from dual;");
+		addCase(Select, Pass, " select * from dual ; ");
+		addCase(Select, Fail, "select * from dual;select * from dual;");
+		addCase(Select, Fail, "insert into mytable values(1)");
 	}
 
 	private static void addCase(MatcherType matcherType, ExpectedResult expectedResult, String sqlFragment) {
