@@ -18,6 +18,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 @RunWith(Parameterized.class)
 public class SqlMatcherTest {
+	private final static List<Object[]> testCases = new ArrayList<Object[]>();
 	private final String sqlFragment;
 	private final MatcherType matcherType;
 	private final ExpectedResult expectedResult;
@@ -29,17 +30,23 @@ public class SqlMatcherTest {
 	}
 
 	@Parameters
-	public static List<Object[]> parameters() {
-		List<Object[]> r = new ArrayList<Object[]>();
-		r.add(new Object[] { "select * from dual", Select, Pass });
-		r.add(new Object[] { "select *, from dual", Select, Fail });
-		r.add(new Object[] { "insert into mytable values(1)", Insert, Pass });
-		r.add(new Object[] { "insert into table", Insert, ExpectedResult.Fail });
-		r.add(new Object[] { "update mytable set a = b", Update, Pass });
-		r.add(new Object[] { "update mytable", Update, Fail });
-		r.add(new Object[] { "delete from mytable", Delete, Pass });
-		r.add(new Object[] { "delete from mytable where", Delete, Fail });
-		return r;
+	public static List<Object[]> testCases() {
+		return testCases;
+	}
+
+	static {
+		addCase("select * from dual", Select, Pass);
+		addCase("select *, from dual", Select, Fail);
+		addCase("insert into mytable values(1)", Insert, Pass);
+		addCase("insert into table", Insert, ExpectedResult.Fail);
+		addCase("update mytable set a = b", Update, Pass);
+		addCase("update mytable", Update, Fail);
+		addCase("delete from mytable", Delete, Pass);
+		addCase("delete from mytable where", Delete, Fail);
+	}
+
+	private static void addCase(String sql, MatcherType matcherType, ExpectedResult expectedResult) {
+		testCases.add(new Object[] { sql, matcherType, expectedResult });
 	}
 
 	@Test
