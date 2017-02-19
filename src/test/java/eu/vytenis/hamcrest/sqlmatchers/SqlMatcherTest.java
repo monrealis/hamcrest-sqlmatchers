@@ -23,7 +23,7 @@ public class SqlMatcherTest {
 	private final MatcherType matcherType;
 	private final ExpectedResult expectedResult;
 
-	public SqlMatcherTest(String sqlFragment, MatcherType matcherType, ExpectedResult expectedResult) {
+	public SqlMatcherTest(MatcherType matcherType, ExpectedResult expectedResult, String sqlFragment) {
 		this.sqlFragment = sqlFragment;
 		this.matcherType = matcherType;
 		this.expectedResult = expectedResult;
@@ -35,18 +35,18 @@ public class SqlMatcherTest {
 	}
 
 	static {
-		addCase("select * from dual", Select, Pass);
-		addCase("select *, from dual", Select, Fail);
-		addCase("insert into mytable values(1)", Insert, Pass);
-		addCase("insert into table", Insert, ExpectedResult.Fail);
-		addCase("update mytable set a = b", Update, Pass);
-		addCase("update mytable", Update, Fail);
-		addCase("delete from mytable", Delete, Pass);
-		addCase("delete from mytable where", Delete, Fail);
+		addCase(Select, Pass, "select * from dual");
+		addCase(Select, Fail, "select *, from dual");
+		addCase(Insert, Pass, "insert into mytable values(1)");
+		addCase(Insert, Fail, "insert into table");
+		addCase(Update, Pass, "update mytable set a = b");
+		addCase(Update, Fail, "update mytable");
+		addCase(Delete, Pass, "delete from mytable");
+		addCase(Delete, Fail, "delete from mytable where");
 	}
 
-	private static void addCase(String sql, MatcherType matcherType, ExpectedResult expectedResult) {
-		testCases.add(new Object[] { sql, matcherType, expectedResult });
+	private static void addCase(MatcherType matcherType, ExpectedResult expectedResult, String sqlFragment) {
+		testCases.add(new Object[] { matcherType, expectedResult, sqlFragment });
 	}
 
 	@Test
