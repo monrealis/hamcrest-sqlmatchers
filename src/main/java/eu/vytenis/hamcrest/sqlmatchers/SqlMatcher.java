@@ -9,7 +9,7 @@ import org.gibello.zql.ZqlParser;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 
-public class SqlMatcher extends TypeSafeMatcher<String> {
+class SqlMatcher extends TypeSafeMatcher<String> {
 	private final Class<? extends ZStatement> expectedType;
 
 	public SqlMatcher(Class<? extends ZStatement> expectedType) {
