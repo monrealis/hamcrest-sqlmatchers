@@ -1,12 +1,10 @@
 package eu.vytenis.hamcrest.sqlmatchers;
 
-import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -41,51 +39,5 @@ public class SqlMatcherTest {
 	@Test
 	public void sqlFragmentValidityMatchesTypeAndExpectedResult() {
 		assertThat(sqlFragment, expectedResult.matcher(matcherType.matcher()));
-	}
-
-	public enum MatcherType {
-		Select {
-			@Override
-			public SqlMatcher matcher() {
-				return SqlMatchers.isSelect();
-			}
-		},
-		Insert {
-			@Override
-			public SqlMatcher matcher() {
-				return SqlMatchers.isInsert();
-			}
-		},
-		Update {
-			@Override
-			public SqlMatcher matcher() {
-				return SqlMatchers.isUpdate();
-			}
-		},
-		Delete {
-			@Override
-			public SqlMatcher matcher() {
-				return SqlMatchers.isDelete();
-			}
-		};
-
-		public abstract SqlMatcher matcher();
-	}
-
-	public enum ExpectedResult {
-		Pass {
-			@Override
-			public <T> Matcher<T> matcher(Matcher<T> matcher) {
-				return matcher;
-			}
-		},
-		Fail {
-			@Override
-			public <T> Matcher<T> matcher(Matcher<T> matcher) {
-				return not(matcher);
-			}
-		};
-		public abstract <T> Matcher<T> matcher(Matcher<T> matcher);
-
 	}
 }
