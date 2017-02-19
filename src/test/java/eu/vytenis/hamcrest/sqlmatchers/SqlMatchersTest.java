@@ -18,13 +18,13 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 @RunWith(Parameterized.class)
-public class SqlMatcherTest {
+public class SqlMatchersTest {
 	private final static List<Object[]> testCases = new ArrayList<Object[]>();
 	private final String sqlFragment;
 	private final MatcherType matcherType;
 	private final ExpectedResult expectedResult;
 
-	public SqlMatcherTest(MatcherType matcherType, ExpectedResult expectedResult, String sqlFragment) {
+	public SqlMatchersTest(MatcherType matcherType, ExpectedResult expectedResult, String sqlFragment) {
 		this.sqlFragment = sqlFragment;
 		this.matcherType = matcherType;
 		this.expectedResult = expectedResult;
@@ -50,6 +50,7 @@ public class SqlMatcherTest {
 		addCase(Select, Pass, "select * from dual;");
 		addCase(Select, Pass, " select * from dual ; ");
 		addCase(Select, Fail, "select * from dual;select * from dual;");
+		addCase(Select, Fail, "insert into mytable values(1)");
 		addCase(Select, Fail, "insert into mytable values(1)");
 	}
 
