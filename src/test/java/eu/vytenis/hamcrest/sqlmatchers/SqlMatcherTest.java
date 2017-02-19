@@ -3,13 +3,30 @@ package eu.vytenis.hamcrest.sqlmatchers;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.gibello.zql.ZDelete;
 import org.gibello.zql.ZInsert;
 import org.gibello.zql.ZQuery;
 import org.gibello.zql.ZUpdate;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
+@RunWith(Parameterized.class)
 public class SqlMatcherTest {
+	private final String sqlFragment;
+	private final MatcherType matcherType;
+	private final ExpectedResult expectedResult;
+
+	public SqlMatcherTest(String sqlFragment, MatcherType matcherType, ExpectedResult expectedResult) {
+		this.sqlFragment = sqlFragment;
+		this.matcherType = matcherType;
+		this.expectedResult = expectedResult;
+	}
+
 	@Test
 	public void matchesValidSelect() {
 		assertThat("select * from dual", isSelect());
@@ -39,7 +56,7 @@ public class SqlMatcherTest {
 	public void doesNotMatchInvalidUpdate() {
 		assertThat("update mytable", not(isUpdate()));
 	}
-	
+
 	@Test
 	public void matchesValidDelete() {
 		assertThat("delete from mytable", isDelete());
@@ -48,6 +65,15 @@ public class SqlMatcherTest {
 	@Test
 	public void doesNotMatchInvalidDelete() {
 		assertThat("delete from mytable where", not(isDelete()));
+	}
+
+	public enum MatcherType {
+		Select, Insert, Update, Delete;
+	}
+
+	public enum ExpectedResult {
+		Pass, Fail
+
 	}
 
 	private SqlMatcher isSelect() {
@@ -65,4 +91,12 @@ public class SqlMatcherTest {
 	private SqlMatcher isDelete() {
 		return new SqlMatcher(ZDelete.class);
 	}
+
+	@Parameters
+	public static List<Object[]> parameters() {
+		List<Object[]> r = new ArrayList<Object[]>();
+		r.add(new Object[] { "select * from dual", MatcherType.Select, ExpectedResult.Pass });
+		return r;
+	}
+
 }
