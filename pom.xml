@@ -32,7 +32,7 @@
 				<version>3.1</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
-					<compilerVersion>1.7</compilerVersion>
+					<compilerVersion>1.5</compilerVersion>
 				</configuration>
 			</plugin>
 		</plugins>
