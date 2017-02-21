@@ -6,6 +6,10 @@
 	<artifactId>sqlmatchers</artifactId>
 	<version>0.1-SNAPSHOT</version>
 
+	<scm>
+		<connection>scm:git:git@github.com:monrealis/hamcrest-sqlmatchers.git</connection>
+	</scm>
+
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh</id>
