@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>eu.vytenis.hamcrest</groupId>
 	<artifactId>sqlmatchers</artifactId>
-	<version>0.2</version>
+	<version>0.3-SNAPSHOT</version>
 	<name>Hamcrest SqlMatchers</name>
 	<description>Hamcrest SqlMatchers validate syntax of SQL statements.</description>
 	<url>https://github.com/monrealis/hamcrest-sqlmatchers/</url>
@@ -11,7 +11,7 @@
 	<scm>
 		<connection>scm:git:git@github.com:monrealis/hamcrest-sqlmatchers.git</connection>
 		<url>https://github.com/monrealis/hamcrest-sqlmatchers/</url>
-		<tag>v0.2</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<distributionManagement>
