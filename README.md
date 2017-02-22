@@ -7,3 +7,37 @@ sqlmatchers
 This library contains Hamcrest matchers to validate SQL statements.
 
 It is expected to be used in unit tests to validate correctness of generated SQL.
+
+Usage
+===
+
+Dependency can be downloaded from central Maven repository.
+
+```xml
+<dependency>
+	<groupId>eu.vytenis.hamcrest</groupId>
+	<artifactId>sqlmatchers</artifactId>
+	<version>0.4</version>
+</dependency>
+```
+
+If you are missing org.gibello:zql-parser
+
+```xml
+		<dependency>
+			<groupId>eu.vytenis.hamcrest</groupId>
+			<artifactId>sqlmatchers</artifactId>
+			<version>0.4</version>
+			<classifier>jar-with-dependencies</classifier>
+			<exclusions>
+				<exclusion>
+					<groupId>org.gibello</groupId>
+					<artifactId>zql-parser</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+```
+
+```java
+assertThat("select * from dual", isSelect());
+```
